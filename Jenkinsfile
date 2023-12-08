@@ -15,7 +15,7 @@ pipeline{
         }
         stage('Checkout from Git'){
             steps{
-                git branch: 'main', url: 'https://github.com/Aj7Ay/Amazon-FE.git'
+                git branch: 'master', url: 'https://github.com/Janakiraman276/cafe-shop.git'
             }
         }
         stage("Sonarqube Analysis "){
@@ -54,22 +54,21 @@ pipeline{
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
                        sh "docker build -t cafe-shop ."
-                       sh "docker tag cafe janakiramn276/cafe-shop:latest "
-                       sh "docker push janakiramn276/cafe-shop:latest "
+                       sh "docker tag cafe-shop janakiraman276/cafe-shop:latest "
+                       sh "docker push janakiraman276/cafe-shop:latest "
                     }
                 }
             }
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image janakiramn276/cafe-shop:latest > trivyimage.txt" 
+                sh "trivy image janakiraman276/cafe-shop:latest > trivyimage.txt" 
             }
         }
         stage('Deploy to container'){
             steps{
-                sh 'docker run -d --name cafe-shop -p 3000:3000 janakiramn276/cafe-shop:latest'
+                sh 'docker run -d --name cafe-shop -p 3000:3000 janakiraman276/cafe-shop:latest'
             }
         }
-
     }
 }
